@@ -2,12 +2,18 @@
 
 namespace TestsGeneratorConsoleApp
 {
-    internal class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            TestsGenerator test = new TestsGenerator();
-            test.CreateTests();
+            string inputPath = "..\\..\\..\\..\\Example\\TestClasses";
+            string outputPath = "..\\..\\..\\..\\Example\\GeneratedTests";
+            List<string> fileList = new List<string>();
+
+            fileList.AddRange(Directory.GetFiles(inputPath, "*.cs"));
+
+            Сonveyor сonveyor = new Сonveyor(outputPath, 10, 10, 10);
+            await сonveyor.Generate(fileList);
         }
     }
 }
