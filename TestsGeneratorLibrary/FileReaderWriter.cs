@@ -20,7 +20,8 @@
 
         public async Task Write(string filePath, string fileContent)
         {
-            if (!Directory.Exists(filePath))
+            FileInfo fileInfo = new FileInfo(filePath);
+            if (!Directory.Exists(fileInfo.DirectoryName))
             {
                 throw new ArgumentException("Directory doesn't exists.");
             }
