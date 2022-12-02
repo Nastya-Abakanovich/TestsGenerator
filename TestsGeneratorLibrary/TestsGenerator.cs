@@ -1,13 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Threading.Tasks.Dataflow;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection.Metadata;
-using System.Security.AccessControl;
-using static System.Net.Mime.MediaTypeNames;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace TestsGeneratorLibrary
 {
@@ -24,29 +18,17 @@ namespace TestsGeneratorLibrary
 
         private SyntaxList<UsingDirectiveSyntax> _usingsSyntaxList = new SyntaxList<UsingDirectiveSyntax>(_usingsList);
 
-        public bool CreateTests()
+        public List<OutputFileInfo> CreateTests(string sourseCode)
         {
+            List<ClassInfo> classInfos = GetClassesInfo(sourseCode);
 
-            string path = "..\\..\\..\\..\\TestClasses\\Class1.cs";
-            if (!File.Exists(path))
+            List < OutputFileInfo > outputInfos = new List<OutputFileInfo>();
+            foreach (ClassInfo classInfo in classInfos)
             {
-                return false;
-                throw new ArgumentException("File doesn't exist");
+                outputInfos.Add(new OutputFileInfo(classInfo.Name + "Tests", CreateTestClass(classInfo)));
             }
 
-            string text = "";
-            using (var file = File.OpenText(path))
-            {
-                text = file.ReadToEnd();
-            }
-
-            var list = GetClassesInfo(text);
-
-            var str = CreateTestClass(list[1]);
-
-            using var writer = new StreamWriter("..\\..\\..\\..\\GeneratedTests\\" + list[1].Name + "Tests.cs");
-            writer.Write(str);
-            return true;
+            return outputInfos;
         }
 
         private string CreateTestClass(ClassInfo classInfo)
@@ -64,7 +46,6 @@ namespace TestsGeneratorLibrary
             return CompilationUnit()
                     .WithUsings(tempUsingsSyntaxList)
                     .AddMembers(namespaceSyntax).NormalizeWhitespace().ToFullString();
-
         }
 
         private List<MemberDeclarationSyntax> CreateTestMethods(ClassInfo classInfo)
@@ -135,7 +116,6 @@ namespace TestsGeneratorLibrary
 
                     classInfoList.Add(new ClassInfo(cl.Identifier.Text, namespaceName, methodsName));
                 }
-
             }
 
             return classInfoList;
