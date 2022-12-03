@@ -10,10 +10,11 @@ namespace TestsGeneratorLibrary
         private static List<UsingDirectiveSyntax> _usingsList = new List<UsingDirectiveSyntax>
         {
             UsingDirective(IdentifierName("System")),
-            UsingDirective(IdentifierName("System.Collections.Generic")),
-            UsingDirective(IdentifierName("System.Linq")),
-            UsingDirective(IdentifierName("System.Text")),
-            UsingDirective(IdentifierName("NUnit.Framework"))
+            UsingDirective(QualifiedName(QualifiedName(IdentifierName("System"),IdentifierName("Collections")),
+                            IdentifierName("Generic"))),
+            UsingDirective(QualifiedName(IdentifierName("System"),IdentifierName("Linq"))),
+            UsingDirective(QualifiedName(IdentifierName("System"),IdentifierName("Text"))),
+            UsingDirective(QualifiedName(IdentifierName("NUnit"),IdentifierName("Framework")))
         };
 
         private SyntaxList<UsingDirectiveSyntax> _usingsSyntaxList = new SyntaxList<UsingDirectiveSyntax>(_usingsList);
