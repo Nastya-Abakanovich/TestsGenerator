@@ -3,6 +3,11 @@ namespace TestClasses
 {
     public class Class1
     {
+        private void PrivateMethod()
+        {
+
+        }
+
         public void Method1()
         {
 
