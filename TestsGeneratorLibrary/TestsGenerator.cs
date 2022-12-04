@@ -1,12 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Security.AccessControl;
-using System;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using System.Reflection;
-using System.Runtime.ConstrainedExecution;
-using System.Collections.Generic;
 
 namespace TestsGeneratorLibrary
 {
@@ -195,7 +191,7 @@ namespace TestsGeneratorLibrary
                 {
                     body.AddRange(varInitialization);
                 }                    
-                body.AddRange(CreateActAndAccertBodyPart(method, classInfo.Name));                
+                body.AddRange(CreateActAndAssertBodyPart(method, classInfo.Name));                
                 body.Add(assertFail);
 
                 MethodDeclarationSyntax testMethod = MethodDeclaration(PredefinedType(
@@ -211,14 +207,12 @@ namespace TestsGeneratorLibrary
             return testMethods;
         }
 
-        private List<StatementSyntax> CreateActAndAccertBodyPart(MethodInfo method, String className)
+        private List<StatementSyntax> CreateActAndAssertBodyPart(MethodInfo method, String className)
         {
             List<StatementSyntax> result = new List<StatementSyntax>();
 
             var callArguments = ArgumentList();
             StatementSyntax invokeMethod;
-            LocalDeclarationStatementSyntax initializationExpected = null;
-            ExpressionStatementSyntax assertInvoke = null;
 
             if (method.MethodSyntax.ParameterList.Parameters.Count > 0)
             {
@@ -246,7 +240,7 @@ namespace TestsGeneratorLibrary
                    IdentifierName(method.MethodSyntax.Identifier.Text)))
                .WithArgumentList(callArguments))))));
 
-                initializationExpected = LocalDeclarationStatement(VariableDeclaration(method.MethodSyntax.ReturnType)
+                var initializationExpected = LocalDeclarationStatement(VariableDeclaration(method.MethodSyntax.ReturnType)
                             .WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier("expected"))
                             .WithInitializer(EqualsValueClause(LiteralExpression(
                                 SyntaxKind.DefaultLiteralExpression, Token(SyntaxKind.DefaultKeyword)))))));
@@ -254,7 +248,7 @@ namespace TestsGeneratorLibrary
 
                 var arguments = ArgumentList();
 
-                assertInvoke = ExpressionStatement(InvocationExpression(MemberAccessExpression(
+                var assertInvoke = ExpressionStatement(InvocationExpression(MemberAccessExpression(
                                     SyntaxKind.SimpleMemberAccessExpression, IdentifierName("Assert"), IdentifierName("AreEqual")))
                                 .WithArgumentList(arguments.AddArguments(new List<ArgumentSyntax> {
                                         Argument(IdentifierName("actual")), Argument(IdentifierName("expected")) }.ToArray())));
