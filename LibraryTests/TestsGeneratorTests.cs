@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestsGeneratorLibrary;
+﻿using TestsGeneratorLibrary;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -87,40 +82,25 @@ namespace LibraryTests
         }
 
         [Test]
-        public void CreateTests_NumberOfMethods_TwoMethods()
-        {
-            IEnumerable<MethodDeclarationSyntax> methodsClass1 = _rootFile1
-                .DescendantNodes()
-                .OfType<MethodDeclarationSyntax>();
-
-            IEnumerable<MethodDeclarationSyntax> methodsClass2 = _rootFile2
-                .DescendantNodes()
-                .OfType<MethodDeclarationSyntax>();
-
-            Assert.AreEqual(2, methodsClass1.Count(), "Invalid number of methods in first output file.");
-            Assert.AreEqual(2, methodsClass2.Count(), "Invalid number of methods in second output file.");
-        }
-
-        [Test]
-        public void CreateTests_MethodName_MethoodNameTest()
+        public void CreateTests_MethodName_MethodNameTest()
         {
             IEnumerable<MethodDeclarationSyntax> methodsClass = _rootFile1
                 .DescendantNodes()
                 .OfType<MethodDeclarationSyntax>();
             
-            Assert.AreEqual("Method1Test", methodsClass.ElementAt(0).Identifier.Text, "Invalid fisrt method name in first output file.");
-            Assert.AreEqual("Method2Test", methodsClass.ElementAt(1).Identifier.Text, "Invalid second method name in fisrt output file.");
+            Assert.AreEqual("Method1Test", methodsClass.ElementAt(1).Identifier.Text, "Invalid fisrt method name in first output file.");
+            Assert.AreEqual("Method2Test", methodsClass.ElementAt(2).Identifier.Text, "Invalid second method name in fisrt output file.");
         }
 
         [Test]
-        public void CreateTests_DuplicateMethodName_MethoodName_NumberTest()
+        public void CreateTests_DuplicateMethodName_MethodName_NumberTest()
         {
             IEnumerable<MethodDeclarationSyntax> methodsClass = _rootFile2
                 .DescendantNodes()
                 .OfType<MethodDeclarationSyntax>();
 
-            Assert.AreEqual("Method_1Test", methodsClass.ElementAt(0).Identifier.Text, "Invalid fisrt method name in second output file.");
-            Assert.AreEqual("Method_2Test", methodsClass.ElementAt(1).Identifier.Text, "Invalid second method name in second output file.");
+            Assert.AreEqual("Method_1Test", methodsClass.ElementAt(1).Identifier.Text, "Invalid fisrt method name in second output file.");
+            Assert.AreEqual("Method_2Test", methodsClass.ElementAt(2).Identifier.Text, "Invalid second method name in second output file.");
         }
     }
 }
