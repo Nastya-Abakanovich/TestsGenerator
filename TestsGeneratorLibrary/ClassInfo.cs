@@ -1,23 +1,28 @@
-﻿namespace TestsGeneratorLibrary
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace TestsGeneratorLibrary
 {
     public class ClassInfo
     {
         public string Name { get; set; }
         public string NamespaceName { get; set; }
-        public List<string> MethodNames { get; set; }
+        public List<MethodInfo> Methods { get; set; }
+        public IEnumerable<ConstructorDeclarationSyntax> Constructors { get; set; }
 
         public ClassInfo() 
         {
             Name = "";
             NamespaceName = "";
-            MethodNames = new List<string>();
+            Methods = new List<MethodInfo>();
+            Constructors = new List<ConstructorDeclarationSyntax>();
         }
 
-        public ClassInfo(string name, string namespaceName, List<string> methodNames)
+        public ClassInfo(string name, string namespaceName, List<MethodInfo> methods, IEnumerable<ConstructorDeclarationSyntax> constructors)
         {
             Name = name;
             NamespaceName = namespaceName;
-            MethodNames = methodNames;
+            Methods = methods;
+            Constructors = constructors;
         }
     }
 }

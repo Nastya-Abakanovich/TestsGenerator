@@ -9,7 +9,7 @@ namespace TestsGeneratorConsoleApp
             string inputPath = "..\\..\\..\\..\\Example\\TestClasses";
             string outputPath = "..\\..\\..\\..\\Example\\GeneratedTests";
             List<string> fileList = new List<string>();
-
+            
             fileList.AddRange(Directory.GetFiles(inputPath, "*.cs"));
 
             Сonveyor сonveyor = new Сonveyor(outputPath, 10, 10, 10);
